@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Travel.Domain.Enums;
 
 namespace Travel.Domain.Entities
 {
@@ -21,5 +22,9 @@ namespace Travel.Domain.Entities
         public int Duration { get; set; }
 
         public bool InstantConfirmation { get; set; }
+
+        public Currency Currency { get; set; }
+
+        public TourList List { get; set; }
     }
 }

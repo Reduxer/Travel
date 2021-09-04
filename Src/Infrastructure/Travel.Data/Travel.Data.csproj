@@ -1,6 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Core\Travel.Application\Travel.Application.csproj" />
     <ProjectReference Include="..\..\Core\Travel.Domain\Travel.Domain.csproj" />
   </ItemGroup>

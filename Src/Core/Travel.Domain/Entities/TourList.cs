@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Travel.Domain.Entities
+{
+    public class TourList
+    {
+        public int Id { get; set; }
+
+        public string City { get; set; }
+
+        public string Country { get; set; }
+
+        public string About { get; set; }
+
+        public IList<TourPackage> Tours { get; set; }
+
+        public TourList()
+        {
+            Tours = new List<TourPackage>();
+        }
+    }
+}
