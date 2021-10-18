@@ -1,18 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Microsoft.EntityFrameworkCore;
-using Travel.Data.Contexts;
+using Newtonsoft.Json;
+using Travel.Data;
+using Travel.Shared;
+using Travel.WebApi.Filters;
+using Travel.Application;
+
 
 namespace Travel.WebApi
 {
@@ -28,13 +25,19 @@ namespace Travel.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<TravelDbContext>(options =>
+            services.AddApplication();
+            services.AddInfrastructureData();
+            services.AddInfrasturctureShared(Configuration);
+
+            services.AddControllers(options => 
             {
-                options.UseSqlite("Data Source=TravelTourDatabase.sqlite3");
+                options.Filters.Add(new ApiExceptionFilter());
+            })
+            .AddNewtonsoftJson(opts =>
+            {
+                opts.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
 
-            services.AddControllers();
-            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Travel.WebApi", Version = "v1" });
