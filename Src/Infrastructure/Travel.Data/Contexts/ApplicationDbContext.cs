@@ -21,6 +21,8 @@ namespace Travel.Data.Contexts
 
         public DbSet<TourList> TourLists { get; set; }
 
+        public DbSet<Todo> Todos { get; set; }
+
         public DbSet<TourPackage> TourPackages { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }

@@ -14,6 +14,8 @@ namespace Travel.Application.Common.Interfaces
 
         DbSet<TourPackage> TourPackages { get; set; }
 
+        DbSet<Todo> Todos { get; set; }
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

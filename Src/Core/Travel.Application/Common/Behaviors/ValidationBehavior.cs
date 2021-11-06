@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using MediatR;
 using FluentValidation;
+using Travel.Application.Common.Exceptions;
 
 
 namespace Travel.Application.Common.Behaviors
@@ -35,7 +36,7 @@ namespace Travel.Application.Common.Behaviors
 
             if (failures.Any())
             {
-                throw new ValidationException(failures);
+                throw new Exceptions.ValidationException(failures);
             }
 
             return await next();

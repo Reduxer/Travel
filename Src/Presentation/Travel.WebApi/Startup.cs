@@ -9,7 +9,7 @@ using Travel.Data;
 using Travel.Shared;
 using Travel.WebApi.Filters;
 using Travel.Application;
-
+using Microsoft.AspNetCore.Mvc;
 
 namespace Travel.WebApi
 {
@@ -28,6 +28,11 @@ namespace Travel.WebApi
             services.AddApplication();
             services.AddInfrastructureData();
             services.AddInfrasturctureShared(Configuration);
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
 
             services.AddControllers(options => 
             {
