@@ -11,7 +11,7 @@ using Travel.Application.TourLists.Commands.UpdateTourList;
 using Travel.Application.TourLists.Queries.ExportTours;
 using Travel.Application.TourLists.Queries.GetTours;
 
-namespace Travel.WebApi.Controllers
+namespace Travel.WebApi.Controllers.V1
 {
     public class TourListsController : ApiController
     {

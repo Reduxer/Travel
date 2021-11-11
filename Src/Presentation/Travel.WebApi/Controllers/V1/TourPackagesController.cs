@@ -10,7 +10,7 @@ using Travel.Application.TourPackages.Commands.DeleteTourPackage;
 using Travel.Application.TourPackages.Commands.UpdateTourPackage;
 using Travel.Application.TourPackages.Commands.UpdateTourPackageDetail;
 
-namespace Travel.WebApi.Controllers
+namespace Travel.WebApi.Controllers.V1
 {
     public class TourPackagesController : ApiController
     {

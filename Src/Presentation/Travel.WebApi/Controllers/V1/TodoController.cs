@@ -9,7 +9,7 @@ using Travel.Application.Todos.Commands.CreateTodo;
 using Travel.Application.Todos.Commands.UpdateTodo;
 using Travel.Application.Todos.Commands.DeleteTodo;
 
-namespace Travel.WebApi.Controllers
+namespace Travel.WebApi.Controllers.V1
 {
     public class TodoController : ApiController
     {
