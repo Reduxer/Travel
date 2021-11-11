@@ -79,7 +79,7 @@ namespace Travel.WebApi.Filters
                 Detail = ex.Message
             };
 
-            exceptionContext.Result = new NotFoundObjectResult(ex);
+            exceptionContext.Result = new NotFoundObjectResult(details);
             exceptionContext.ExceptionHandled = true;
         }
     }
