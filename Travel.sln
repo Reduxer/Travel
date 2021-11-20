@@ -7,19 +7,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{781566AA-F56
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{7285A9E7-5BE2-487B-A848-ABACA9E9DE62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Travel.Application", "Src\Core\Travel.Application\Travel.Application.csproj", "{FFFA24EF-52DB-41C5-A615-202C79A7A8DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Travel.Application", "Src\Core\Travel.Application\Travel.Application.csproj", "{FFFA24EF-52DB-41C5-A615-202C79A7A8DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Travel.Domain", "Src\Core\Travel.Domain\Travel.Domain.csproj", "{3534E3C5-6CD0-445E-A8A6-B3D5B501483D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Travel.Domain", "Src\Core\Travel.Domain\Travel.Domain.csproj", "{3534E3C5-6CD0-445E-A8A6-B3D5B501483D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{9A3CBBDE-A693-4E28-BBB2-A5D4949F4F86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Travel.Data", "Src\Infrastructure\Travel.Data\Travel.Data.csproj", "{3A91929A-5CC2-4902-A243-FDD2306D85DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Travel.Data", "Src\Infrastructure\Travel.Data\Travel.Data.csproj", "{3A91929A-5CC2-4902-A243-FDD2306D85DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Travel.Shared", "Src\Infrastructure\Travel.Shared\Travel.Shared.csproj", "{33203436-0534-4F84-86FC-F50E7F1B3791}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Travel.Shared", "Src\Infrastructure\Travel.Shared\Travel.Shared.csproj", "{33203436-0534-4F84-86FC-F50E7F1B3791}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{B7A7FAA8-9E04-49DF-86F8-18AC37713325}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Travel.WebApi", "Src\Presentation\Travel.WebApi\Travel.WebApi.csproj", "{5132595F-21B0-4349-844A-03EAAE761430}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Travel.WebApi", "Src\Presentation\Travel.WebApi\Travel.WebApi.csproj", "{5132595F-21B0-4349-844A-03EAAE761430}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Travel.Identity", "Src\Infrastructure\Travel.Identity\Travel.Identity.csproj", "{A480A358-67A5-4E14-B503-9A3E2DB3E8A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,9 +31,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{FFFA24EF-52DB-41C5-A615-202C79A7A8DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -94,6 +93,21 @@ Global
 		{5132595F-21B0-4349-844A-03EAAE761430}.Release|x64.Build.0 = Release|Any CPU
 		{5132595F-21B0-4349-844A-03EAAE761430}.Release|x86.ActiveCfg = Release|Any CPU
 		{5132595F-21B0-4349-844A-03EAAE761430}.Release|x86.Build.0 = Release|Any CPU
+		{A480A358-67A5-4E14-B503-9A3E2DB3E8A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A480A358-67A5-4E14-B503-9A3E2DB3E8A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A480A358-67A5-4E14-B503-9A3E2DB3E8A4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A480A358-67A5-4E14-B503-9A3E2DB3E8A4}.Debug|x64.Build.0 = Debug|Any CPU
+		{A480A358-67A5-4E14-B503-9A3E2DB3E8A4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A480A358-67A5-4E14-B503-9A3E2DB3E8A4}.Debug|x86.Build.0 = Debug|Any CPU
+		{A480A358-67A5-4E14-B503-9A3E2DB3E8A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A480A358-67A5-4E14-B503-9A3E2DB3E8A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A480A358-67A5-4E14-B503-9A3E2DB3E8A4}.Release|x64.ActiveCfg = Release|Any CPU
+		{A480A358-67A5-4E14-B503-9A3E2DB3E8A4}.Release|x64.Build.0 = Release|Any CPU
+		{A480A358-67A5-4E14-B503-9A3E2DB3E8A4}.Release|x86.ActiveCfg = Release|Any CPU
+		{A480A358-67A5-4E14-B503-9A3E2DB3E8A4}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7285A9E7-5BE2-487B-A848-ABACA9E9DE62} = {781566AA-F56D-46B9-B58E-28B358345EC7}
@@ -104,5 +118,9 @@ Global
 		{33203436-0534-4F84-86FC-F50E7F1B3791} = {9A3CBBDE-A693-4E28-BBB2-A5D4949F4F86}
 		{B7A7FAA8-9E04-49DF-86F8-18AC37713325} = {781566AA-F56D-46B9-B58E-28B358345EC7}
 		{5132595F-21B0-4349-844A-03EAAE761430} = {B7A7FAA8-9E04-49DF-86F8-18AC37713325}
+		{A480A358-67A5-4E14-B503-9A3E2DB3E8A4} = {9A3CBBDE-A693-4E28-BBB2-A5D4949F4F86}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2140D067-DA20-44CD-B265-84A973D4B0F6}
 	EndGlobalSection
 EndGlobal

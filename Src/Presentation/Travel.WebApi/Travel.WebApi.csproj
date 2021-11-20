@@ -29,6 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Travel.Application\Travel.Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Travel.Data\Travel.Data.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Travel.Identity\Travel.Identity.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Travel.Shared\Travel.Shared.csproj" />
   </ItemGroup>
 

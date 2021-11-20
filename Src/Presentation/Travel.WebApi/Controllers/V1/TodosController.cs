@@ -11,7 +11,7 @@ using Travel.Application.Todos.Commands.DeleteTodo;
 
 namespace Travel.WebApi.Controllers.V1
 {
-    public class TodoController : ApiController
+    public class TodosController : ApiController
     {
         [HttpGet]
         [ProducesResponseType(typeof(TodosVM), StatusCodes.Status200OK)]

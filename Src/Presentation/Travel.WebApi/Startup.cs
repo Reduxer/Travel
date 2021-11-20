@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Travel.Data;
 using Travel.Shared;
+using Travel.Identity;
 using Travel.WebApi.Filters;
 using Travel.Application;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,8 @@ using Travel.WebApi.Helpers;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using System.Collections.Generic;
+using Travel.Identity.Middlewares;
 
 namespace Travel.WebApi
 {
@@ -32,6 +35,7 @@ namespace Travel.WebApi
             services.AddApplication();
             services.AddInfrastructureData();
             services.AddInfrasturctureShared(Configuration);
+            services.AddInfrastructureIdentity(Configuration);
 
             services.Configure<ApiBehaviorOptions>(options =>
             {
@@ -50,6 +54,29 @@ namespace Travel.WebApi
             services.AddSwaggerGen(c =>
             {
                 c.OperationFilter<SwaggerDefaultValues>();
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Description = "JWT Authorization header using the Bearer scheme.",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    { 
+                        new OpenApiSecurityScheme()
+                        {
+                            Reference = new OpenApiReference()
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        }, new List<string>()
+                    }
+                });
             });
 
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
@@ -89,6 +116,8 @@ namespace Travel.WebApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseAuthorization();
 
