@@ -13,7 +13,7 @@ namespace Travel.Application.Dtos.User
 
         public string LastName { get; set; }
 
-        public string Username { get; set; }
+        public string Email { get; set; }
 
         public string Token { get; set; }
 
@@ -22,7 +22,7 @@ namespace Travel.Application.Dtos.User
             Id = user.Id;
             FirstName = user.FirstName;
             LastName = user.LastName;
-            Username = user.Username;
+            Email = user.Email;
             Token = token;
         }
     }

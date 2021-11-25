@@ -7,12 +7,13 @@ using FluentValidation;
 using MediatR;
 using System.Reflection;
 using Travel.Application.Common.Behaviors;
+using Microsoft.Extensions.Configuration;
 
 namespace Travel.Application
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
+        public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
@@ -21,6 +22,13 @@ namespace Travel.Application
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehavior<,>));
+
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = configuration.GetConnectionString("RedisConnection");
+                var assemblyName = Assembly.GetExecutingAssembly().GetName();
+                options.InstanceName = assemblyName.Name;
+            });
 
             return services;
         }

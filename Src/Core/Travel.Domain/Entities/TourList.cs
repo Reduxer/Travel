@@ -14,11 +14,11 @@ namespace Travel.Domain.Entities
 
         public string About { get; set; }
 
-        public IList<TourPackage> Tours { get; set; }
+        public IList<TourPackage> TourPackages { get; set; }
 
         public TourList()
         {
-            Tours = new List<TourPackage>();
+            TourPackages = new List<TourPackage>();
         }
     }
 }

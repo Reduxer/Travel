@@ -10,10 +10,10 @@ namespace Travel.Application.Dtos.Tour
     {
         public TourListDto()
         {
-            Items = new List<TourPackageDto>();
+            TourPackages = new List<TourPackageDto>();
         }
 
-        public IList<TourPackageDto> Items { get; set; }
+        public IList<TourPackageDto> TourPackages { get; set; }
 
         public int Id { get; set; }
 

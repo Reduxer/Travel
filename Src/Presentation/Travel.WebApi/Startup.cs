@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Travel.Data;
 using Travel.Shared;
@@ -15,8 +14,8 @@ using Travel.WebApi.Helpers;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using System.Collections.Generic;
 using Travel.Identity.Middlewares;
+using Travel.WebApi.Extensions;
 
 namespace Travel.WebApi
 {
@@ -32,8 +31,8 @@ namespace Travel.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApplication();
-            services.AddInfrastructureData();
+            services.AddApplication(Configuration);
+            services.AddInfrastructureData(Configuration);
             services.AddInfrasturctureShared(Configuration);
             services.AddInfrastructureIdentity(Configuration);
 
@@ -51,48 +50,11 @@ namespace Travel.WebApi
                 opts.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
 
-            services.AddSwaggerGen(c =>
-            {
-                c.OperationFilter<SwaggerDefaultValues>();
-
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-                {
-                    Description = "JWT Authorization header using the Bearer scheme.",
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.Http,
-                    Scheme = "bearer"
-                });
-
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-                {
-                    { 
-                        new OpenApiSecurityScheme()
-                        {
-                            Reference = new OpenApiReference()
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        }, new List<string>()
-                    }
-                });
-            });
-
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
-
-            services.AddApiVersioning(options =>
-            {
-                options.DefaultApiVersion = new ApiVersion(1, 0);
-                options.AssumeDefaultVersionWhenUnspecified = true;
-                options.ReportApiVersions = true;
-            });
-
-            services.AddVersionedApiExplorer(options => 
-            {
-                options.GroupNameFormat = "'v'VVV";
-                options.SubstituteApiVersionInUrl = true;
-            });
+            services.AddSwaggerGenExtension();
+            services.AddApiVersioningExtension();
+            services.AddVersionedApiExplorerExtension();
+            services.AddMemoryCache();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -102,15 +64,7 @@ namespace Travel.WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-
-                app.UseSwaggerUI(c => 
-                { 
-                    foreach(var description in apiVersionDescriptionProvider.ApiVersionDescriptions)
-                    {
-                        c.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
-                    }
-                });
+                app.UseSwaggerExtension(apiVersionDescriptionProvider);
             }
 
             app.UseHttpsRedirection();

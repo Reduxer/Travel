@@ -53,7 +53,7 @@ namespace Travel.Identity.Middlewares
                 }, out var validatedToken);
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
-                var userId = int.Parse(jwtToken.Claims.First(c => c.Type == "id").Value);
+                var userId = int.Parse(jwtToken.Claims.First(c => c.Type == "sub").Value);
 
                 httpContext.Items["User"] = userService.GetById(userId);
             }

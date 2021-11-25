@@ -9,11 +9,20 @@ using Travel.Application.TourPackages.Commands.CreateTourPackage;
 using Travel.Application.TourPackages.Commands.DeleteTourPackage;
 using Travel.Application.TourPackages.Commands.UpdateTourPackage;
 using Travel.Application.TourPackages.Commands.UpdateTourPackageDetail;
+using Travel.Application.TourPackages.Queries.GetTourPackages;
 
 namespace Travel.WebApi.Controllers.V1
 {
     public class TourPackagesController : ApiController
     {
+        [HttpGet()]
+        [ProducesResponseType(typeof(TourPackagesVm), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<TourPackagesVm>> GetTourPackages([FromQuery] GetTourPackagesQuery query)
+        {
+            return await Mediator.Send(query);
+        }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
