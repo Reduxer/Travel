@@ -15,7 +15,10 @@ using System.Text.Json;
 
 namespace Travel.Application.TourLists.Queries.GetTours
 {
-    public class GetToursQuery : IRequest<ToursVm> {  }
+    public class GetToursQuery : IRequest<ToursVm> 
+    {
+        public bool NoCache { get; set; } = false;
+    }
 
     public class GetToursQueryHandler : IRequestHandler<GetToursQuery, ToursVm>
     {
@@ -36,9 +39,7 @@ namespace Travel.Application.TourLists.Queries.GetTours
             ToursVm toursVm = null;
             string serializedTourList = null;
 
-            var cachedTourLists = await _distributedCache.GetAsync(cacheKey, cancellationToken);
-
-            if(cachedTourLists is null)
+            if (request.NoCache)
             {
                 toursVm = new ToursVm()
                 {
@@ -47,22 +48,37 @@ namespace Travel.Application.TourLists.Queries.GetTours
                     .OrderBy(t => t.City)
                     .ToListAsync(cancellationToken)
                 };
-
-                serializedTourList = JsonSerializer.Serialize(toursVm);
-                cachedTourLists = Encoding.UTF8.GetBytes(serializedTourList);
-
-                var cachingOptions = new DistributedCacheEntryOptions()
-                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(5))
-                    .SetSlidingExpiration(TimeSpan.FromMinutes(1));
-
-                await _distributedCache.SetAsync(cacheKey,cachedTourLists, cachingOptions);
-
-                return toursVm;
             }
+            else
+            {
+                var cachedTourLists = await _distributedCache.GetAsync(cacheKey, cancellationToken);
 
-            serializedTourList = Encoding.UTF8.GetString(cachedTourLists);
-            toursVm = JsonSerializer.Deserialize<ToursVm>(serializedTourList);
+                if (cachedTourLists is null)
+                {
+                    toursVm = new ToursVm()
+                    {
+                        Lists = await _dbContext.TourLists
+                        .ProjectTo<TourListDto>(_mapper.ConfigurationProvider)
+                        .OrderBy(t => t.City)
+                        .ToListAsync(cancellationToken)
+                    };
 
+                    serializedTourList = JsonSerializer.Serialize(toursVm);
+                    cachedTourLists = Encoding.UTF8.GetBytes(serializedTourList);
+
+                    var cachingOptions = new DistributedCacheEntryOptions()
+                        .SetAbsoluteExpiration(TimeSpan.FromMinutes(5))
+                        .SetSlidingExpiration(TimeSpan.FromMinutes(1));
+
+                    await _distributedCache.SetAsync(cacheKey, cachedTourLists, cachingOptions);
+
+                    return toursVm;
+                }
+
+                serializedTourList = Encoding.UTF8.GetString(cachedTourLists);
+                toursVm = JsonSerializer.Deserialize<ToursVm>(serializedTourList);
+            }
+            
             return toursVm;
         }
     }

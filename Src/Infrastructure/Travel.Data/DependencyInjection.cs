@@ -17,7 +17,7 @@ namespace Travel.Data
         {
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
 
             services.AddScoped<IApplicationDbContext>(provider =>

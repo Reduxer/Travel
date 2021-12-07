@@ -13,12 +13,15 @@ using Serilog.Events;
 using Serilog.Enrichers;
 using Serilog.Formatting.Compact;
 using System.IO;
+using Microsoft.Extensions.DependencyInjection;
+using Travel.Data.Contexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace Travel.WebApi
 {
     public class Program
     {
-        public static int Main(string[] args)
+        public static async Task<int> Main(string[] args)
         {
             var assemblyName = Assembly.GetExecutingAssembly().GetName();
 
@@ -44,7 +47,30 @@ namespace Travel.WebApi
             try
             {
                 Log.Information("Starting Host");
-                CreateHostBuilder(args).Build().Run();
+                var host = CreateHostBuilder(args).Build();
+
+                using var scope = host.Services.CreateScope();
+                var services = scope.ServiceProvider;
+
+                try
+                {
+                    var dbContext = services.GetRequiredService<ApplicationDbContext>();
+
+                    if (dbContext.Database.IsSqlServer())
+                    {
+                        await dbContext.Database.MigrateAsync();
+                    }
+
+                    await ApplicationDbContextSeed.SeedSampleData(dbContext);
+                }
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "An error ocuured while migrating or seeding the database");
+                    throw;
+                }
+
+                await host.RunAsync();
                 return 0;
             }
             catch (Exception ex)

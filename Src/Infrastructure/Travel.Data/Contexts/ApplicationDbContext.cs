@@ -13,7 +13,7 @@ using System.Reflection;
 
 namespace Travel.Data.Contexts
 {
-    class ApplicationDbContext : DbContext, IApplicationDbContext
+    public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
         private readonly IDateTime _dateTime;
 

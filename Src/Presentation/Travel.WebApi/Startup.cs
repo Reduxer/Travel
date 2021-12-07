@@ -16,6 +16,8 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Travel.Identity.Middlewares;
 using Travel.WebApi.Extensions;
+using VueCliMiddleware;
+using Microsoft.AspNetCore.SpaServices;
 
 namespace Travel.WebApi
 {
@@ -35,6 +37,11 @@ namespace Travel.WebApi
             services.AddInfrastructureData(Configuration);
             services.AddInfrasturctureShared(Configuration);
             services.AddInfrastructureIdentity(Configuration);
+
+            services.AddSpaStaticFiles(options =>
+            {
+                options.RootPath = "../vue-app/dist";
+            });
 
             services.Configure<ApiBehaviorOptions>(options =>
             {
@@ -67,6 +74,17 @@ namespace Travel.WebApi
                 app.UseSwaggerExtension(apiVersionDescriptionProvider);
             }
 
+            app.UseStaticFiles();
+
+            app.UseSpaStaticFiles();
+
+            app.UseCors(opts => 
+            {
+                opts.AllowAnyOrigin();
+                opts.AllowAnyHeader();
+                opts.AllowAnyMethod();
+            });
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -78,6 +96,13 @@ namespace Travel.WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapToVueCliProxy(
+                    "{*path}",
+                    new SpaOptions { SourcePath = "../vue-app", StartupTimeout = System.TimeSpan.FromSeconds(30)},
+                    npmScript: (System.Diagnostics.Debugger.IsAttached) ? "serve" : null,
+                    forceKill: true,
+                    wsl: false // Set to true if you are using WSL on windows. For other operating systems it will be ignored
+                    );
             });
         }
     }

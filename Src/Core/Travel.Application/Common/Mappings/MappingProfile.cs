@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Travel.Application.Common.Mappings
 {
-    class MappingProfile : Profile
+    public class MappingProfile : Profile
     {
         public MappingProfile()
         {
