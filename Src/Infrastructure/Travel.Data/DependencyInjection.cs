@@ -8,6 +8,8 @@ using Travel.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Travel.Application.Common.Interfaces;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace Travel.Data
 {
@@ -17,7 +19,19 @@ namespace Travel.Data
         {
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+                var sp = services.BuildServiceProvider();
+                using var scope = sp.CreateScope();
+
+                var environment = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
+
+                if(environment.IsEnvironment("Testing"))
+                {
+                    options.UseInMemoryDatabase("TravelTourTestDatabase");
+                }
+                else
+                {
+                    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+                }
             });
 
             services.AddScoped<IApplicationDbContext>(provider =>

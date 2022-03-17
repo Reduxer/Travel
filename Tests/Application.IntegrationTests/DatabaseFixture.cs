@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Respawn;
 using Microsoft.AspNetCore.Hosting;
 using Travel.WebApi;
 using Travel.Data.Contexts;
@@ -22,8 +21,6 @@ namespace Application.IntegrationTests
 
         private static IServiceScopeFactory _serviceScopeFactory;
 
-        private static Checkpoint _checkpoint;
-
         public DatabaseFixture()
         {
             var configBuilder = new ConfigurationBuilder();
@@ -37,18 +34,13 @@ namespace Application.IntegrationTests
             var startup = new Startup(_configuration);
 
             var services = new ServiceCollection();
-            services.AddSingleton(Mock.Of<IWebHostEnvironment>(env => env.EnvironmentName == "Development" && env.ApplicationName == "Travel.WebApi"));
+            services.AddSingleton(Mock.Of<IWebHostEnvironment>(env => env.EnvironmentName == "Testing" && env.ApplicationName == "Travel.WebApi"));
             services.AddLogging();
 
             startup.ConfigureServices(services);
 
             _serviceScopeFactory = services.BuildServiceProvider()
                 .GetService<IServiceScopeFactory>();
-
-            _checkpoint = new Checkpoint()
-            {
-                TablesToIgnore =  new[] { "__EFMigrationHistory" }
-            };
 
             EnsureDatabase();
         }
@@ -62,7 +54,9 @@ namespace Application.IntegrationTests
 
         public static async Task ResetState()
         {
-            await _checkpoint.Reset(_configuration.GetConnectionString("DefaultConnection"));
+            using var scope = _serviceScopeFactory.CreateScope();
+            var appDbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            await appDbContext.Database.EnsureDeletedAsync();
         }
 
         public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
